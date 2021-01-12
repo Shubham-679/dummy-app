@@ -5,6 +5,7 @@ import Navbar from "./components/navbar";
 import Home from './components/home';
 import Login from './components/login';
 import Signup from './components/signup';
+import Tasks from './components/addTasks';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/home" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/tasks" component={Tasks} />
       </Switch>
     </div>
   );

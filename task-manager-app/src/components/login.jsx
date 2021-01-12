@@ -1,12 +1,21 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { checkUser } from "../actions";
 
 const initialValues = {
   email: "",
   password: ""
 };
 
-const Login = () => {
+const Login = (props) => {
+  
   const [values, setValues] = useState(initialValues);
+  const dispatch = useDispatch();
+
+
+  // const users = useSelector(state => state.users)
+  // const userName = users.map(el => el.user.name).toString();
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,6 +28,10 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(values);
+    dispatch(checkUser(values))
+
+    props.history.replace('/tasks')
+    // props.history.push("/tasks")
   };
 
   return (

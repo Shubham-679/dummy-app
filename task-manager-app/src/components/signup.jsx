@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector , useDispatch } from "react-redux";
+import { addUser } from "../actions";
 
 const initialValues = {
   name: "",
@@ -9,6 +11,7 @@ const initialValues = {
 
 const Signup = (props) => {
   const [values, setValues] = useState(initialValues);
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,7 +23,7 @@ const Signup = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(values)
+    dispatch(addUser(values))  
   };
 
   return (
@@ -70,7 +73,7 @@ const Signup = (props) => {
               className="form-control"
             />
           </div>
-          <button className="btn-sm btn-primary m-2" type="submit">Submit</button>
+          <button className="btn btn-primary m-2" type="submit">Submit</button>
         </form>
       </div>
     </div>
