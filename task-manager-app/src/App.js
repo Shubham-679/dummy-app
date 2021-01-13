@@ -6,10 +6,14 @@ import Home from './components/home';
 import Login from './components/login';
 import Signup from './components/signup';
 import Tasks from './components/addTasks';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
   return (
     <div className="App">
+      <ToastContainer/>
       <Navbar/>
       <Switch>
       <Route path="/home" component={Home} />

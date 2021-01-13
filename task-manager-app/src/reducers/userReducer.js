@@ -2,14 +2,9 @@
 const userReducer = (state = [], action) => {
     switch (action.type) {
       case "ADD_USER":
-        return [
-            ...state,
-            {
-                user  : action.values
-            }
-        ]  
+        return state = action.payload
+
         case "CHECK_USER":
-            console.log(action.values)
             return    
       default:
         return state;

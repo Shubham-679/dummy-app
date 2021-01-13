@@ -1,8 +1,10 @@
 const express = require("express");
 const User = require("../model/userModel");
 const router = express.Router();
+const bcrypt = require('bcrypt');
+const auth = require('../middlewares/auth')
 
-router.get('/' , async (req, res) => {
+router.get('/' , auth , async (req, res) => {
     try {
         const users = await User.find({});
         res.status(201).send(users)
@@ -14,10 +16,25 @@ router.get('/' , async (req, res) => {
 router.post('/' , async (req, res) => {
     const user = new User(req.body)
     try {
-        await user.save()
-        res.status(201).send(user);    
+        const salt = await bcrypt.genSalt(10);  
+        user.password = await bcrypt.hash(user.password , salt);
+        await user.save();
+        const token = await user.generateAuthToken();
+        // res.header('x-auth-token', token).status(201).send({user});
+        res.status(201).send({user , token});  
     } catch (e) {
         res.status(400).send(e);
+    }
+})
+
+router.post('/login', async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password)
+        const token = await user.generateAuthToken()
+        res.send({ user , token })
+    } catch (e) {
+        console.log(e);
+        res.status(400).send(e)
     }
 })
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector , useDispatch } from "react-redux";
 import { addUser } from "../actions";
+import { toast } from "react-toastify";
 
 const initialValues = {
   name: "",
@@ -23,8 +24,17 @@ const Signup = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addUser(values))  
-  };
+    dispatch(addUser(values))
+    .then(()=>{
+      toast.success("You Registered Succesfully, Now You Can Login");
+      props.history.replace('/login')
+    })
+    .catch(()=> {
+      toast.error("Unexpected error");
+      props.history.replace('/signup')
+    })
+
+  } 
 
   return (
     <div>

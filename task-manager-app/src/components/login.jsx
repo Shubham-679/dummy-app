@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { checkUser } from "../actions";
+import { findUser } from "../actions";
 
 const initialValues = {
   email: "",
@@ -28,7 +28,7 @@ const Login = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(values);
-    dispatch(checkUser(values))
+    dispatch(findUser(values))
 
     props.history.replace('/tasks')
     // props.history.push("/tasks")

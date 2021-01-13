@@ -3,8 +3,9 @@ const app = express();
 const mongoose  = require('mongoose');
 const users = require('./routes/user');
 const tasks = require('./routes/task');
+const cors = require('cors');
 
-
+app.use(cors());
 app.use(express.json());
 app.use('/users' , users);
 app.use('/tasks', tasks);
