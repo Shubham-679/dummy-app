@@ -17,9 +17,11 @@ export const addUser = (values) => async (dispatch) => {
     return user;
   };
 
-  export const addTask = (values) => async (dispatch) => {
-    console.log(values)
-    const { data : newTask } = await axios.post("http://localhost:4000/tasks",values);
+  export const addTask = (text , token) => async (dispatch) => {
+    const obj = { description : text }
+    const { data : newTask } = await axios.post("http://localhost:4000/tasks",obj , {
+      headers: { "x-auth-token": token }
+    });
     console.log(newTask)
     dispatch({
       type: 'ADD_TASK',
@@ -31,9 +33,8 @@ export const addUser = (values) => async (dispatch) => {
   export const getTasks = (token) => async (dispatch) => {
     console.log("in action")
     const { data : tasks } = await axios.get("http://localhost:4000/tasks" , {
-      headers: { "x-auth-token": token },
+      headers: { "x-auth-token": token }
     });
-    console.log(tasks)
      dispatch({
        type: 'GET_TASKS',
        payload : tasks

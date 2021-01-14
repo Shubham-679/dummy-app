@@ -27,11 +27,9 @@ const Login = (props) => {
     e.preventDefault();
     console.log(values);
     dispatch(findUser(values))
-    .then((result)=>{      
-      console.log(result)
+    .then((res)=>{      
       toast.success("Login Success");
-      console.log(users.token)
-      localStorage.setItem("x-auth-token",users.token);
+      localStorage.setItem("x-auth-token",res.token);
       props.history.replace('/tasks')
     })
     .catch((e)=>{

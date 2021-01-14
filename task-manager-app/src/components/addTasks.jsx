@@ -6,17 +6,17 @@ const Tasks = (props) => {
     const users = useSelector(state => state.users)
     const tasks = useSelector(state => state.tasks)
     const dispatch = useDispatch();
-    console.log(users)
-    // console.log(users.user._id)
+    console.log(users);
+    console.log(tasks)
 
-    useEffect(() => {
-        let token = localStorage.getItem("x-auth-token");
+    let token = localStorage.getItem("x-auth-token");
         if(token === null){
           localStorage.setItem("x-auth-token", "");
           token = "";
         }
+    useEffect(() => {
         dispatch(getTasks(token))
-    }, [dispatch])
+    }, [dispatch, token])
     
     let input = React.createRef();
 
@@ -24,7 +24,7 @@ const Tasks = (props) => {
         e.preventDefault();
        let task =  input.current.value;
         console.log("submitted",task);
-        dispatch(addTask(task))
+        dispatch(addTask(task , token))
     }
 
     const handleUpdate = (task) => {

@@ -10,7 +10,7 @@ router.get('/' , auth, async (req, res) => {
         .populate('owner', 'name -_id')
         .select('description')
         res.status(201).send(tasks)
-        console.log(tasks)
+        console.log("get method finished")
     } catch (error) {
         res.status(500)
     }
@@ -18,18 +18,18 @@ router.get('/' , auth, async (req, res) => {
 
 
 router.post('/', auth, async (req, res)=>{
-    console.log(req.user)
-const task = new Task({
-    ...req.body,
-    owner : req.user._id
-})
-
-try {
-   await task.save()
-   res.status(200).send(task) 
-} catch (e) {
-    res.status(400).send(e)
-}    
+    console.log("inside post")
+    const task = new Task({
+        description : req.body.description,
+        owner : req.user._id
+    })
+    try {
+    await task.save()
+    res.status(200).send(task) 
+    } catch (e) {
+        res.status(400).send(e)
+        console.log(e)
+    }    
 })
 
 
