@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { findUser } from "../actions";
+import { toast } from "react-toastify";
 
 const initialValues = {
   email: "",
@@ -29,9 +30,14 @@ const Login = (props) => {
     e.preventDefault();
     console.log(values);
     dispatch(findUser(values))
-
-    props.history.replace('/tasks')
-    // props.history.push("/tasks")
+    .then(()=>{
+      toast.success("Login Success");
+      props.history.replace('/tasks')
+    })
+    .catch((e)=>{
+      toast.error("Email or Password Are Invalid !");
+      console.log(e);
+    })    
   };
 
   return (

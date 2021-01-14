@@ -9,16 +9,11 @@ export const addUser = (values) => async (dispatch) => {
   };
 
   export const findUser = (values) => async (dispatch) => {
-    const { data : user } = await axios.post("http://localhost:4000/users/login",values);
+    console.log("before value",values)
+   const { data : user } = await axios.post("http://localhost:4000/users/login",values);
+    console.log("after", user)
     dispatch({
       type: 'FIND_USER',
       payload : user
     });
   };
-// export const findUser = (values) => {
-//     console.log("action")
-//     return{
-//         type : 'CHECK_USER',
-//         values  
-//     }
-// }
