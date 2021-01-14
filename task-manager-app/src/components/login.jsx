@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { findUser } from "../actions";
 import { toast } from "react-toastify";
 
@@ -11,12 +11,9 @@ const initialValues = {
 const Login = (props) => {
   
   const [values, setValues] = useState(initialValues);
+  const users = useSelector(state => state.users)
   const dispatch = useDispatch();
-
-
-  // const users = useSelector(state => state.users)
-  // const userName = users.map(el => el.user.name).toString();
-
+ 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,12 +23,15 @@ const Login = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
     console.log(values);
     dispatch(findUser(values))
-    .then(()=>{
+    .then((result)=>{      
+      console.log(result)
       toast.success("Login Success");
+      console.log(users.token)
+      localStorage.setItem("x-auth-token",users.token);
       props.history.replace('/tasks')
     })
     .catch((e)=>{

@@ -1,11 +1,12 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch,Redirect } from 'react-router-dom';
 import Navbar from "./components/navbar";
 import Home from './components/home';
 import Login from './components/login';
 import Signup from './components/signup';
 import Tasks from './components/addTasks';
+import NotFound from './components/notFound'
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,6 +21,9 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/tasks" component={Tasks} />
+      <Route path="/not-found" component={NotFound}></Route>
+      <Redirect from="/"  exact to="/home" />
+      <Redirect to="/not-found"/>
       </Switch>
     </div>
   );

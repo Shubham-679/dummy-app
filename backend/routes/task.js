@@ -1,25 +1,69 @@
 const express = require("express");
 const Task = require("../model/taskModel");
 const router = express.Router();
+const auth = require('../middlewares/auth')
 
-
-router.get('/' , async (req, res) => {
+router.get('/' , auth, async (req, res) => {
     try {
-        const tasks = await Task.find({});
+        console.log("get method")
+        const tasks = await Task.find({owner : req.user._id})
+        .populate('owner', 'name -_id')
+        .select('description')
         res.status(201).send(tasks)
+        console.log(tasks)
     } catch (error) {
         res.status(500)
     }
 })
 
-router.post('/' , async (req, res) => {
-    const task = new Task(req.body)
-    try {
-        await task.save()
-        res.status(201).send(task);    
-    } catch (e) {
-        res.status(400).send(e);
-    }
+
+router.post('/', auth, async (req, res)=>{
+    console.log(req.user)
+const task = new Task({
+    ...req.body,
+    owner : req.user._id
 })
+
+try {
+   await task.save()
+   res.status(200).send(task) 
+} catch (e) {
+    res.status(400).send(e)
+}    
+})
+
+
+
+
+
+// router.get('/' , auth,  async (req, res)=>{
+    
+// try {
+//    const task = await Task.find({owner : req.user._id}) 
+// console.log("get method")
+//     await req.user.populate({
+//         path : 'tasks',
+//         options : {
+//             limit : parseInt(req.query.limit),
+//             skip : parseInt(req.query.skip),
+//         }
+//         }).execPopulate()
+//      res.status(201).send(req.user.tasks)
+// } catch (error) {
+//     res.status(500).send()  
+// }
+
+// })
+
+
+// router.post('/' , async (req, res) => {
+//     const task = new Task(req.body)
+//     try {
+//         await task.save()
+//         res.status(201).send(task);    
+//     } catch (e) {
+//         res.status(400).send(e);
+//     }
+// })
 
 module.exports = router ;

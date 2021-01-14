@@ -1,28 +1,30 @@
 import React, {useState, useEffect} from 'react';
-
+import { useSelector , useDispatch } from "react-redux";
+import { addTask,getTasks } from '../actions';
 
 const Tasks = (props) => {
+    const users = useSelector(state => state.users)
+    const tasks = useSelector(state => state.tasks)
+    const dispatch = useDispatch();
+    console.log(users)
+    // console.log(users.user._id)
 
-    const [ tasks , setTasks ] = useState([
-        { id : 1 , text: "John" },
-        { id : 2 , text: "Steve" },
-        { id : 3 , text: "Martin" }
-    ])
-
+    useEffect(() => {
+        let token = localStorage.getItem("x-auth-token");
+        if(token === null){
+          localStorage.setItem("x-auth-token", "");
+          token = "";
+        }
+        dispatch(getTasks(token))
+    }, [dispatch])
+    
     let input = React.createRef();
 
     const handleOnsubmit = (e) => {
         e.preventDefault();
-       let addTask =  input.current.value;
-        console.log("submitted",addTask);
-       
-        let id=4;
-        let obj = { 
-            id: id,
-            text : addTask
-        }
-        tasks.push(obj)
-        setTasks((tasks) => [...tasks]);
+       let task =  input.current.value;
+        console.log("submitted",task);
+        dispatch(addTask(task))
     }
 
     const handleUpdate = (task) => {
@@ -61,7 +63,7 @@ const Tasks = (props) => {
                             textDecoration: task.completed ? 'line-through' : 'none'
                         }}
                         >  
-                        {task.text}
+                        {task.description}
 
                         <button 
                         className="btn btn-warning btn-sm float-right m-2"
