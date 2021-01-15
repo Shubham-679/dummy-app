@@ -4,15 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
-import {  createStore , applyMiddleware , compose } from 'redux';
+// import {  createStore , applyMiddleware , compose } from 'redux';
 import { Provider } from 'react-redux';
-import combineReducers from './reducers/index'
-import thunk from 'redux-thunk';
+// import combineReducers from './reducers/index'
+// import thunk from 'redux-thunk';
+import { store , persistor} from './store';
+import { PersistGate } from 'redux-persist/integration/react'
 
-const store = createStore( combineReducers, compose(
-  applyMiddleware(thunk),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-))
+// const store = createStore( combineReducers, compose(
+//   applyMiddleware(thunk),
+//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+// ))
 
 store.subscribe(() => console.log(store.getState()))
 
@@ -20,7 +22,9 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
          <App/>
+         </PersistGate>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

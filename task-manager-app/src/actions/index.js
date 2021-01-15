@@ -40,4 +40,14 @@ export const addUser = (values) => async (dispatch) => {
        payload : tasks
      });
   }
+
+  export const updateTask = (task ,token) => async (dispatch) => {
+    await axios.put("http://localhost:4000/tasks/"+task._id, task, {
+      headers: { "x-auth-token": token }
+    });
+     dispatch({
+       type: 'UPDATE_TASKS',
+       payload : task
+     });
+  }
   

@@ -9,6 +9,8 @@ import Tasks from './components/addTasks';
 import NotFound from './components/notFound'
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Logout from './components/logout';
+import Profile from './components/profile';
 
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/tasks" component={Tasks} />
+      <Route path="/logout" component={Logout} />
+      <Route path="/profile" component={Profile} />
       <Route path="/not-found" component={NotFound}></Route>
       <Redirect from="/"  exact to="/home" />
       <Redirect to="/not-found"/>

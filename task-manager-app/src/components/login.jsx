@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
-import { findUser } from "../actions";
+import { useDispatch } from "react-redux";
+import {  findUser } from "../actions";
 import { toast } from "react-toastify";
+
+
 
 const initialValues = {
   email: "",
@@ -11,9 +13,8 @@ const initialValues = {
 const Login = (props) => {
   
   const [values, setValues] = useState(initialValues);
-  const users = useSelector(state => state.users)
   const dispatch = useDispatch();
- 
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,10 +28,13 @@ const Login = (props) => {
     e.preventDefault();
     console.log(values);
     dispatch(findUser(values))
-    .then((res)=>{      
+    .then((res)=>{    
+      console.log("res",res)  
       toast.success("Login Success");
       localStorage.setItem("x-auth-token",res.token);
+      console.log("after res")
       props.history.replace('/tasks')
+      // window.location = "/tasks";
     })
     .catch((e)=>{
       toast.error("Email or Password Are Invalid !");
@@ -75,5 +79,7 @@ const Login = (props) => {
     </div>
   );
 };
+
+
 
 export default Login;
