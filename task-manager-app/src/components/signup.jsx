@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector , useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addUser } from "../actions";
 import { toast } from "react-toastify";
 
@@ -37,7 +37,7 @@ const Signup = (props) => {
   } 
 
   return (
-    <div>
+    <div style={{backgroundColor : '#ffcccc'}}>
       <h1 className="m-4"> New Registration</h1>
       <div className="d-flex justify-content-center">
         <form onSubmit={handleSubmit}>

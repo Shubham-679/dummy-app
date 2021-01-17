@@ -3,11 +3,10 @@ import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 const Navbar = ({users}) => {
-    console.log(users.user)
    
         return (
-            <div className="container mt-3">
-                <nav className="navbar navbar-expand-sm navbar-dark bg-primary" >
+            <div className="container-fluid"  style={{backgroundColor : '#2d4059'}}>
+                <nav className="navbar navbar-expand-sm navbar-dark" >
                     <div className="container-fluid">
                         
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,8 +19,8 @@ const Navbar = ({users}) => {
                                { !users.user && (
                                    <React.Fragment>
                                 <Link className="navbar-brand" to="/home">Home</Link>
-                                <NavLink className="nav-link" to="/login">Login</NavLink>
-                                <NavLink className="nav-link" to="/signup">SignUp</NavLink>
+                                <NavLink className="nav-link " to="/login">Login</NavLink>
+                                <NavLink className="nav-link " to="/signup">SignUp</NavLink>
                                 </React.Fragment>)
                                 }
 

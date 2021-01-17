@@ -26,13 +26,10 @@ const Login = (props) => {
 
   const handleSubmit =  (e) => {
     e.preventDefault();
-    console.log(values);
     dispatch(findUser(values))
     .then((res)=>{    
-      console.log("res",res)  
       toast.success("Login Success");
-      localStorage.setItem("x-auth-token",res.token);
-      console.log("after res")
+      // localStorage.setItem("x-auth-token",res.token);
       props.history.replace('/tasks')
       // window.location = "/tasks";
     })
@@ -43,7 +40,7 @@ const Login = (props) => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{backgroundColor : '#ffcccc'}}>
       <h1 className="m-4"> Login Here..</h1>
       <div className="d-flex justify-content-center">
         <form onSubmit={handleSubmit}>
@@ -79,7 +76,5 @@ const Login = (props) => {
     </div>
   );
 };
-
-
 
 export default Login;

@@ -1,13 +1,16 @@
-import React, { useEffect} from 'react';
+import { useEffect } from "react";
+import { useDispatch, connect } from "react-redux";
+import { logoutUser } from "../actions";
 
-const Logout = () => {
-    useEffect(()=>{
-        localStorage.clear('x-auth-token')
-        window.location = "/"
-    },[])
-    return ( 
-       null
-     );
-}
- 
-export default Logout;
+const Logout = ({ token }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(logoutUser(token));
+    window.location = "/";
+  });
+  return null;
+};
+const mapStateToProps = (state) => ({
+  token: state.users.token,
+});
+export default connect(mapStateToProps)(Logout);
