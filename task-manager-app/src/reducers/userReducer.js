@@ -19,14 +19,16 @@ const userReducer = (state = [], action) => {
         },
       }
       case "ADD_PHOTO":
-        return state = {
-          img : action.payload,
-          ...state         
+        return  {
+          ...state,
+          user : action.payload,
+               
         }
+
         case "GET_USER":
         return {
-          token : state.token,
-          user : action.payload
+          user : action.user,
+          ...state
         }
 
     default:

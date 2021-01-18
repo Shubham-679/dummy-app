@@ -15,9 +15,9 @@ const Profile = (props) => {
     const [values, setValues] = useState(initialValues);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getUser(props.users.token))
-      }, [dispatch, props.users.token])
+    // useEffect(() => {
+    //     dispatch(getUser(props.users.token)).then((res)=>console.log(res))
+    //   }, [dispatch, props.users.token])
      
 
 
@@ -46,12 +46,14 @@ const Profile = (props) => {
         console.log(event.target.files[0]);
         image = event.target.files[0];
       }
-    
+      
+      let profile
       const onClickHandler = event => {
         const data = new FormData()
         data.append('img', image)
         dispatch(addProfileImg(data , props.users.token))
-        window.location.reload();
+        .then((res)=> profile = res.image)
+        // window.location.reload();
       }
     
     return ( 
@@ -66,7 +68,7 @@ const Profile = (props) => {
                   <div className="container">
         <div className="row">
             <div className="col-sm-2">
-              <img className="img-thumbnail" src={props.users.img} alt=""></img>
+              <img className="img-thumbnail" src={props.users.user.img} alt=""></img>
             </div>
         </div>
       </div>

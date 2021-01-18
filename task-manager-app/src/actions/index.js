@@ -119,7 +119,7 @@ export const removeTask = (taskId, token) => async (dispatch) => {
 
 export const addProfileImg = (data , token) => async (dispatch) => {
   console.log(data)
-  const newPhoto = await axios.put("http://localhost:4000/users/me/profileImg", data , {
+  const {data : newPhoto} = await axios.put("http://localhost:4000/users/me/profileImg", data , {
     headers: {
       "x-auth-token": token,
       'Content-Type': 'multipart/form-data'
@@ -130,18 +130,21 @@ export const addProfileImg = (data , token) => async (dispatch) => {
     type: 'ADD_PHOTO',
     payload : newPhoto
   });
+  return newPhoto
 };
 
 export const getUser = (token) => async (dispatch) => {
   const {
-    data: tasks
+    data: user
   } = await axios.get("http://localhost:4000/users/me", {
     headers: {
       "x-auth-token": token
     },
   });
+  console.log(user)
   dispatch({
     type: "GET_USER",
-    payload: tasks,
+    payload: user,
   });
+  return user;
 };
