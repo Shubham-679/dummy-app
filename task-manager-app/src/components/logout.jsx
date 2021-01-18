@@ -6,6 +6,7 @@ const Logout = ({ token }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(logoutUser(token));
+    localStorage.clear();
     window.location = "/";
   });
   return null;

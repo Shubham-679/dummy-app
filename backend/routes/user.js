@@ -3,10 +3,12 @@ const User = require("../model/userModel");
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth')
+const multer = require("multer");
 
-router.get('/' , auth , async (req, res) => {
+
+router.get('/me' , auth , async (req, res) => {
     try {
-        const users = await User.find({});
+        const users = await User.find().select('-password');;
         res.status(201).send(users)
     } catch (error) {
         res.status(500)
@@ -21,8 +23,6 @@ router.post('/' , async (req, res) => {
         await user.save();
         const token = await user.generateAuthToken();
         res.header('x-auth-token', token).status(201).send(user);
-        // res.status(201).send(user);
-        // res.status(201).send({user , token});  
     } catch (e) {
         res.status(400).send(e);
     }
@@ -48,5 +48,63 @@ router.get('/logout', auth, async (req, res)=>{
         res.status(400).send()
     }
 })
+router.patch('/me', auth, async(req, res)=>{
+
+    console.log("inside patch")
+    
+    const updates = Object.keys(req.body)
+    console.log(updates)
+    const allowedUpdate = ['name', 'age', 'email', 'password' ]
+    const isValidoperation = updates.every((update)=> allowedUpdate.includes(update))
+    console.log(isValidoperation)
+    if(!isValidoperation){
+        return res.status(400).send({err:"invalid updates"})
+    }
+    try {
+        // const user = await User.findById(req.params.id)
+        updates.forEach(update => req.user[update] = req.body[update])
+        const salt = await bcrypt.genSalt(10);  
+        req.user.password = await bcrypt.hash(req.user.password , salt);
+        console.log(req.user.password)
+        await req.user.save()
+
+        // const user = await User.findByIdAndUpdate(req.params.id,req.body,{new:true, runValidators:true})
+        // if (!user) {
+        //      return res.status(404).send()
+        // }
+        res.send(req.user)
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public' );
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' +file.originalname )
+    }
+});
+
+var upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
+router.put('/me/profileImg', auth ,  upload.single('img'), async (req, res, next) => {
+    const link = req.protocol + '://' + req.get('host')
+        req.user.img = link + '/public/' + req.file.filename;
+        await req.user.save()
+        res.send(req.user)
+})
+
 
 module.exports = router ;

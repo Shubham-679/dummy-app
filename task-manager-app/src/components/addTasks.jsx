@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, {useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTask, getTasks, updateTask } from "../actions";
+import { addTask, getTasks, updateTask, removeTask } from "../actions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 const Tasks = ({ users }) => {
@@ -33,7 +33,10 @@ const Tasks = ({ users }) => {
     dispatch(updateTask(task, token));
   };
 
-  const handleRemove = (task) => {};
+ 
+  const handleRemove = async (task) => {
+    dispatch(removeTask(task._id, token))
+  };
 
   return (
     <div className="container">

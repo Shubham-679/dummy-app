@@ -9,11 +9,13 @@ app.use(cors());
 app.use(express.json());
 app.use('/users' , users);
 app.use('/tasks', tasks);
+app.use('/public', express.static('public'));
 
 mongoose.connect('mongodb://localhost/Dummy',{
      useNewUrlParser: true,
      useUnifiedTopology: true,
-     useCreateIndex : true
+     useCreateIndex : true,
+     useFindAndModify: false
 })
 .then(()=>{console.log("Connected to mongoDB")})
 .catch(()=>{console.log("Connection failed")})

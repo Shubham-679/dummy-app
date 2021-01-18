@@ -1,7 +1,9 @@
 import axios from "axios";
 
 export const addUser = (values) => async (dispatch) => {
-  const { data: newUser } = await axios.post(
+  const {
+    data: newUser
+  } = await axios.post(
     "http://localhost:4000/users",
     values
   );
@@ -12,7 +14,9 @@ export const addUser = (values) => async (dispatch) => {
 };
 
 export const findUser = (values) => async (dispatch) => {
-  const { data: user } = await axios.post(
+  const {
+    data: user
+  } = await axios.post(
     "http://localhost:4000/users/login",
     values
   );
@@ -24,8 +28,12 @@ export const findUser = (values) => async (dispatch) => {
 };
 
 export const logoutUser = (token) => async (dispatch) => {
-  const { data: user } = await axios.get("http://localhost:4000/users/logout", {
-    headers: { "x-auth-token": token },
+  const {
+    data: user
+  } = await axios.get("http://localhost:4000/users/logout", {
+    headers: {
+      "x-auth-token": token
+    },
   });
   dispatch({
     type: "LOGOUT_USER",
@@ -33,13 +41,32 @@ export const logoutUser = (token) => async (dispatch) => {
   });
 };
 
+export const updateUser = (values, token) => async (dispatch) => {
+  console.log(values)
+  console.log(token)
+  const  { data : user } = await axios.patch("http://localhost:4000/users/me", values, {
+    headers: {
+      "x-auth-token": token
+    },
+  });
+  console.log(user)
+  dispatch({
+    type: "UPDATE_USER",
+    payload: user,
+  });
+};
 export const addTask = (text, token) => async (dispatch) => {
-  const obj = { description: text };
-  const { data: newTask } = await axios.post(
+  const obj = {
+    description: text
+  };
+  const {
+    data: newTask
+  } = await axios.post(
     "http://localhost:4000/tasks",
-    obj,
-    {
-      headers: { "x-auth-token": token },
+    obj, {
+      headers: {
+        "x-auth-token": token
+      },
     }
   );
   dispatch({
@@ -49,8 +76,12 @@ export const addTask = (text, token) => async (dispatch) => {
 };
 
 export const getTasks = (token) => async (dispatch) => {
-  const { data: tasks } = await axios.get("http://localhost:4000/tasks", {
-    headers: { "x-auth-token": token },
+  const {
+    data: tasks
+  } = await axios.get("http://localhost:4000/tasks", {
+    headers: {
+      "x-auth-token": token
+    },
   });
   dispatch({
     type: "GET_TASKS",
@@ -60,10 +91,57 @@ export const getTasks = (token) => async (dispatch) => {
 
 export const updateTask = (task, token) => async (dispatch) => {
   await axios.put("http://localhost:4000/tasks/" + task._id, task, {
-    headers: { "x-auth-token": token },
+    headers: {
+      "x-auth-token": token
+    },
   });
   dispatch({
     type: "UPDATE_TASKS",
     payload: task,
+  });
+};
+
+
+export const removeTask = (taskId, token) => async (dispatch) => {
+  console.log(taskId)
+  const {
+    data: tasks
+  } = await axios.delete("http://localhost:4000/tasks/" + taskId, {
+    headers: {
+      "x-auth-token": token
+    },
+  });
+  dispatch({
+    type: "REMOVE_TASK",
+    payload: tasks,
+  });
+};
+
+export const addProfileImg = (data , token) => async (dispatch) => {
+  console.log(data)
+  const newPhoto = await axios.put("http://localhost:4000/users/me/profileImg", data , {
+    headers: {
+      "x-auth-token": token,
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+  console.log(newPhoto)
+  dispatch({
+    type: 'ADD_PHOTO',
+    payload : newPhoto
+  });
+};
+
+export const getUser = (token) => async (dispatch) => {
+  const {
+    data: tasks
+  } = await axios.get("http://localhost:4000/users/me", {
+    headers: {
+      "x-auth-token": token
+    },
+  });
+  dispatch({
+    type: "GET_USER",
+    payload: tasks,
   });
 };

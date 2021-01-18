@@ -16,7 +16,7 @@ const Navbar = ({users}) => {
                             <ul className="navbar-nav">
 
 
-                               { !users.user && (
+                               { !users.token&& (
                                    <React.Fragment>
                                 <Link className="navbar-brand" to="/home">Home</Link>
                                 <NavLink className="nav-link " to="/login">Login</NavLink>
@@ -24,7 +24,7 @@ const Navbar = ({users}) => {
                                 </React.Fragment>)
                                 }
 
-                                 { users.user && (
+                                 { users.token && (
                                    <React.Fragment>
                                 <NavLink className="navbar-brand" to="/tasks">Home</NavLink>
                                <NavLink className="nav-link" to="/logout">Logout</NavLink>

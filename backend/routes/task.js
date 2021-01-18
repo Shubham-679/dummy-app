@@ -29,7 +29,6 @@ router.post("/", auth, async (req, res) => {
 });
 
 router.put("/:id", auth, async (req, res) => {
-  console.log(req.body._id);
   try {
     const task = await Task.findByIdAndUpdate(req.body._id, req.body, {
       new: true,
@@ -43,5 +42,20 @@ router.put("/:id", auth, async (req, res) => {
     res.status(404).send();
   }
 });
+
+router.delete('/:id' , auth, async (req, res) => {
+  try {
+    const task = await Task.findOneAndDelete({_id: req.params.id , owner : req.user._id})
+    if(!task){
+      res.status(404).send()
+    }
+      res.status(201).send(task)
+  } catch (e) {
+    console.log(e);
+    res.status(404).send()
+  }
+})
+
+
 
 module.exports = router;
