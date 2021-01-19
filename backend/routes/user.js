@@ -8,7 +8,7 @@ const multer = require("multer");
 
 router.get('/me' , auth , async (req, res) => {
     try {
-        const users = await User.find().select('-password');;
+        const users = await User.find().select('-password');
         res.status(201).send(users)
     } catch (error) {
         res.status(500)
@@ -50,13 +50,11 @@ router.get('/logout', auth, async (req, res)=>{
 })
 router.patch('/me', auth, async(req, res)=>{
 
-    console.log("inside patch")
-    
     const updates = Object.keys(req.body)
-    console.log(updates)
+    
     const allowedUpdate = ['name', 'age', 'email', 'password' ]
     const isValidoperation = updates.every((update)=> allowedUpdate.includes(update))
-    console.log(isValidoperation)
+    
     if(!isValidoperation){
         return res.status(400).send({err:"invalid updates"})
     }
@@ -65,9 +63,9 @@ router.patch('/me', auth, async(req, res)=>{
         updates.forEach(update => req.user[update] = req.body[update])
         const salt = await bcrypt.genSalt(10);  
         req.user.password = await bcrypt.hash(req.user.password , salt);
-        console.log(req.user.password)
+       
         await req.user.save()
-
+        console.log(req.user)
         // const user = await User.findByIdAndUpdate(req.params.id,req.body,{new:true, runValidators:true})
         // if (!user) {
         //      return res.status(404).send()
@@ -78,6 +76,25 @@ router.patch('/me', auth, async(req, res)=>{
     }
 })
 
+router.delete('/me',auth,  async (req, res)=>{
+
+    try {
+        console.log("inside delete method")
+        // const user = await User.findByIdAndDelete(req.user._id)
+        // if(!user){
+        //     res.status(404).send('user not found')
+        // }
+        // res.send(user)
+        await req.user.remove()
+        res.send(req.user)
+        console.log("delete method complete")
+
+
+    } catch (e) {
+        console.log(e)
+        res.status(500).send()
+    }
+})
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

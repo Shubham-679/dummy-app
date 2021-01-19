@@ -11,25 +11,17 @@ const userReducer = (state = [], action) => {
 
     case "UPDATE_USER":
       return {
-        token : state.token,
-        user : {
-          name : action.payload.name,
-          email : action.payload.email,
-          age : action.payload.age
-        },
+        // token : state.token,
+        ...state,
+        user :  action.payload
       }
       case "ADD_PHOTO":
         return  {
           ...state,
-          user : action.payload,
-               
+          user : action.payload,      
         }
-
-        case "GET_USER":
-        return {
-          user : action.user,
-          ...state
-        }
+      case "REMOVE_USER":
+        return state = []
 
     default:
       return state;

@@ -49,7 +49,6 @@ export const updateUser = (values, token) => async (dispatch) => {
       "x-auth-token": token
     },
   });
-  console.log(user)
   dispatch({
     type: "UPDATE_USER",
     payload: user,
@@ -89,8 +88,23 @@ export const getTasks = (token) => async (dispatch) => {
   });
 };
 
+export const toggleTask = (id , token) => async (dispatch) => {
+  console.log(token)
+  const {
+    data: taskToggle
+  } = await axios.put("http://localhost:4000/tasks/" + id, {
+    headers: {
+      "x-auth-token": token
+    },
+  });
+  dispatch ({
+      type : 'TOGGLE_TASK',
+      taskToggle
+  })
+}
+
 export const updateTask = (task, token) => async (dispatch) => {
-  await axios.put("http://localhost:4000/tasks/" + task._id, task, {
+  await axios.patch("http://localhost:4000/tasks/" + task._id, task, {
     headers: {
       "x-auth-token": token
     },
@@ -103,7 +117,6 @@ export const updateTask = (task, token) => async (dispatch) => {
 
 
 export const removeTask = (taskId, token) => async (dispatch) => {
-  console.log(taskId)
   const {
     data: tasks
   } = await axios.delete("http://localhost:4000/tasks/" + taskId, {
@@ -118,14 +131,12 @@ export const removeTask = (taskId, token) => async (dispatch) => {
 };
 
 export const addProfileImg = (data , token) => async (dispatch) => {
-  console.log(data)
   const {data : newPhoto} = await axios.put("http://localhost:4000/users/me/profileImg", data , {
     headers: {
       "x-auth-token": token,
       'Content-Type': 'multipart/form-data'
     }
   });
-  console.log(newPhoto)
   dispatch({
     type: 'ADD_PHOTO',
     payload : newPhoto
@@ -133,17 +144,15 @@ export const addProfileImg = (data , token) => async (dispatch) => {
   return newPhoto
 };
 
-export const getUser = (token) => async (dispatch) => {
-  const {
-    data: user
-  } = await axios.get("http://localhost:4000/users/me", {
+export const removeUser = (token) => async (dispatch) => {
+  const user = await axios.delete("http://localhost:4000/users/me", {
     headers: {
       "x-auth-token": token
     },
   });
   console.log(user)
   dispatch({
-    type: "GET_USER",
+    type: "REMOVE_USER",
     payload: user,
   });
   return user;

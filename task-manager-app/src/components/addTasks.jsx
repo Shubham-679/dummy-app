@@ -1,21 +1,30 @@
 import React, {useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTask, getTasks, updateTask, removeTask } from "../actions";
+import { addTask, getTasks, updateTask, removeTask,toggleTask } from "../actions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-const Tasks = ({ users }) => {
-  const tasks = useSelector((state) => state.tasks);
-  const dispatch = useDispatch();
 
+
+const Tasks = ({ users , toggleTask , tasks}) => {
+
+
+const b = tasks.map(a => a.completed).toString()
+console.log(b)
+  // const tasks = useSelector((state) => state.tasks);
+  const dispatch = useDispatch();
+  
   // let token = localStorage.getItem("x-auth-token");
   //     if(token === null){
-  //       localStorage.setItem("x-auth-token", "");
-  //       token = "";
-  //     }
-  const token = users.token;
-  useEffect(() => {
-    dispatch(getTasks(token));
-  }, [dispatch, token, users]);
+    //       localStorage.setItem("x-auth-token", "");
+    //       token = "";
+    //     }
+    const token = users.token;
+    useEffect(() => {
+
+      dispatch(getTasks(token));
+    }, [dispatch, token, users]);
+    
+  
 
   let input = React.createRef();
   const handleOnsubmit = (e) => {
@@ -33,10 +42,12 @@ const Tasks = ({ users }) => {
     dispatch(updateTask(task, token));
   };
 
- 
   const handleRemove = async (task) => {
     dispatch(removeTask(task._id, token))
   };
+
+  
+ 
 
   return (
     <div className="container">
@@ -69,11 +80,21 @@ const Tasks = ({ users }) => {
                 <li
                   className="list-group-item"
                   key={task._id}
-                  // onClick={() => toggleTask(task.id)}
                   style={{
-                    textDecoration: task.completed ? "line-through" : "none",
+                    textDecoration: task.completed ===  'true' ? "line-through" : "none",
                   }}
                 >
+
+                  <input type="checkbox"
+                  checked = { 
+                    
+                  
+                     task.completed 
+                  
+                  }
+                  onChange={() => toggleTask(task._id, token)}
+                  
+                  />
                   {task.description}
 
                   <div>
@@ -109,5 +130,9 @@ const Tasks = ({ users }) => {
 };
 const mapStateToProps = (state) => ({
   users: state.users,
+  tasks : state.tasks
 });
-export default connect(mapStateToProps)(Tasks);
+const mapDispatchToProps = (dispatch) => ({
+  toggleTask : (id ,token) => dispatch(toggleTask(id , token))
+})
+export default connect(mapStateToProps , mapDispatchToProps)(Tasks);

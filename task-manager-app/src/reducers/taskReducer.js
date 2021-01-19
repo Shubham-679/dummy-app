@@ -13,6 +13,12 @@ const taskReducer = (state = [], action) => {
           
           case "REMOVE_TASK":
             return state.filter((a) => a._id !== action.payload._id)
+                
+            case "TOGGLE_TASK":
+                return state.map(task =>
+                    (task.id === action._id) 
+                    ? { ...task, completed : !task.completed} : task
+                )  
       
             default:
         return state;
