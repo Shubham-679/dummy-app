@@ -12,6 +12,6 @@ const Logout = ({ token }) => {
   return null;
 };
 const mapStateToProps = (state) => ({
-  token: state.users.token,
+  token: state.users.token
 });
 export default connect(mapStateToProps)(Logout);
