@@ -19,13 +19,13 @@ const Tasks = (props) => {
   //     }
  
 
-  console.log(props.users.token)
+  // console.log(props.users.token)
 
-  dispatch(getTasks(props.users.token));
+  // dispatch(getTasks(props.users.token));
 
-  // useEffect(() => {
-  //   dispatch(getTasks(props.users.token));
-  // },[]);
+  useEffect(() => {
+    dispatch(getTasks(props.users.token));
+  },[]);
 
   let input = React.createRef();
   const handleOnsubmit = (e) => {
